@@ -18,7 +18,7 @@ npm start
 
 ## 入门 puppeteer
 
-``` bash
+``` js
 // 引入 puppeteer
 const puppeteer = require('puppeteer');
 
