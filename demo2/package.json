@@ -1,0 +1,14 @@
+{
+  "name": "puppeteer-demo",
+  "version": "1.0.0",
+  "description": "puppeteer-demo",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "Huangshunq",
+  "license": "ISC",
+  "devDependencies": {
+    "puppeteer": "^0.11.0"
+  }
+}

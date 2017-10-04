@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>webix</title>
+    <link rel="stylesheet" href="codebase/webix.css">
+    <script src="codebase/webix.js"></script>
+</head>
+<body>
+    <script>
+        var data = [
+            {
+                id: 1,
+                folder: 1,
+                name: "lll",
+                email: "alex@spam.com",
+                subject: "Invitation",
+                date: "25/07/2016 12:30:20"
+            },
+            {
+                id: 2,
+                folder: 1,
+                name: "琉璃干",
+                email: "alex@spam.com",
+                subject: "Report",
+                date: "25/07/2016 12:30:20"
+            },
+            {
+                id: 3,
+                folder: 2,
+                name: "小三",
+                email: "alex@spam.com",
+                subject: "Re: Forecast",
+                date: "25/07/2016 12:30:20"
+            },
+            {
+                id: 4,
+                folder: 2,
+                name: "小泽",
+                email: "alex@spam.com",
+                subject: "Invitation",
+                date: "25/07/2016 12:30:20"
+            }
+        ];
+
+        webix.ready(function(){
+            webix.ui({
+                type: "space", // 定义所需大小的属性
+                rows: [
+                    // 第一行：toolbar
+                    {
+                        view: "toolbar",
+                        height: 45,
+                        elements: [
+                            {
+                                view: "label",
+                                label: "My Email Manager"
+                            }
+                        ]
+                    },
+                    // 第二行：其它
+                    {
+                        type: "wide", // clean 获得无边框的单元格，wide 将获得有边框的、更大空间的单元格
+                        cols: [
+                            // 第一列：tree 和 calendar
+                            {
+                                type: "clean",
+                                rows: [
+                                    {
+                                        view: "tree",
+                                        id: "my_tree",
+                                        select: true,
+                                        width: 280,
+                                        data: [
+                                            {id:"1",value:"Inbox"},
+                                            {id:"2",value:"Sent"},
+                                            {id:"3",value:"Drafts"},
+                                            {id:"4",value:"Trash"},
+                                            {
+                                                id:"5",
+                                                value:"Contact Groups",
+                                                open: true, // 可拓展以显示 data 的细节
+                                                data: [
+                                                    {id:"5-1",value:"Friends"},
+                                                    {id:"5-2",value:"Family"}
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        view: "calendar",
+                                        timepicker: true
+                                    }
+                                ]
+                            },
+                            // 第二列：list,button,和 message reader
+                            {
+                                type: "wide",
+                                rows: [
+                                    {
+                                        view: "datatable",
+                                        id: "my_datatable",
+                                        data: data,
+                                        scrollX: false, // 禁用水平滚动条
+                                        columns: [
+                                            {
+                                                id:"checked",
+                                                header: {
+                                                    content: "masterCheckbox" // 定义主复选框的标题
+                                                },
+                                                template: "{common.checkbox()}", // “{common.checkbox（）}”可以在此列的每个单元格中添加一个复选框
+                                                width: 40
+                                            },
+                                            {
+                                                id: "name",
+                                                width: 250,
+                                                header: "From"
+                                            },
+                                            {
+                                                id: "subject",
+                                                header: "Subject",
+                                                fillspace: true // 强制填充未使用的空间
+                                            },
+                                            {
+                                                id: "date",
+                                                header: "Date",
+                                                width: 150
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        height: 45,
+                                        cols: [
+                                            {
+                                                view: "button",
+                                                label: "Reply",
+                                                type: "iconButton", // 选择添加哪种图标表示方法
+                                                icon: "reply", // 选择显示的图标（fontawesome图标库）
+                                                width: 95
+                                            },
+                                            {
+                                                view: "button",
+                                                label: "Create",
+                                                type: "iconButton",
+                                                icon: "envelope",
+                                                width: 95,
+                                                // 事件监听器
+                                                click: function(){
+                                                    $$("my_win").getBody().clear(); // 删除之前插入的数据
+                                                    $$("my_win").show();
+                                                }
+                                            },
+                                            {
+                                                // 置空
+                                            },
+                                            {
+                                                view: "button",
+                                                label: "Delete",
+                                                type: "iconButton",
+                                                icon: "times",
+                                                width: 95
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        id: "details",
+                                        template: "No message selected"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            });
+            webix.ui({
+                view: "window",
+                move: true, // 窗口可移动
+                id: "my_win",
+                width: 400,
+                head: "New Message", // 标题
+                position: "center", // 窗口出现在页面中心
+                body: {
+                    view: "form",
+                    borderless: true, // 隐藏弹出框的边框
+                    elements: [ // element 定义控件
+                        {
+                            view: "text",
+                            label: "To:",
+                            name: "address"
+                        },
+                        {
+                            view: "text",
+                            label: "Subject",
+                            name: "subject"
+                        },
+                        {
+                            view: "textarea",
+                            height: 200,
+                            label: "Message",
+                            name: "message"
+                        },
+                        {
+                            cols: [
+                                {
+                                    view: "button",
+                                    value: "Send"
+                                },
+                                {
+                                    view: "button",
+                                    value: "Close",
+                                    click:("$$('my_win').hide();")
+                                }
+                            ]
+                        }
+                    ]
+                }
+            });
+
+            // 数据绑定
+            $$("my_datatable").bind($$("my_tree"),function(obj,filter){
+                return obj.folder == filter.id;
+            });
+            // 默认选择显示第一个文件夹内容
+            $$("my_tree").select(1);
+
+            // 操作控件属性
+            var message = "这是插入的数据";
+            $$("details").define("template",message);
+            $$("details").render(); // $$("details").refresh(); 也可以
+        });
+    </script>
+</body>
+</html>
